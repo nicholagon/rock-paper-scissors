@@ -42,8 +42,16 @@
 
             function startGame() {
                 let numOfRounds = 0;
+
                 while(1) {
                     let playerChoice = askPlayer();
+
+                    if(playerChoice === null) {
+                        alert('Game cancelled.');
+                        console.log('Game cancelled.');
+                        return
+                    }
+
                     let compChoice = computerPlay();
                     let result = playRound(playerChoice, compChoice);
                     numOfRounds++;
@@ -54,18 +62,26 @@
                         break;
                 }
 
-                determineWinner(numOfRounds);
+                if(playerChoice !== null)
+                    determineWinner(numOfRounds);
             }
 
             function askPlayer() {            
                 while(1) {
                     let playerInput = prompt("Rock! Paper! Scissors! What'll you play?");
+
+                    if(playerInput == null) {
+                        return playerInput;
+                    }
+
                     let loweredInput = playerInput.toLowerCase();
+                    
                     if(loweredInput === 'rock' || loweredInput === 'paper' || loweredInput === 'scissors') {
                         let formattedChoice = formatChoice(loweredInput);
                         console.log('> Player played ' + formattedChoice);             
                         return formattedChoice;
                     }
+                    
                 }
             }
 
