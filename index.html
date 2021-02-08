@@ -30,10 +30,11 @@
         </div>
 
         <script>
-            const SCORE_TO_WIN = 3;
+            const SCORE_TO_WIN = 5;
             let playerScore = 0;
             let computerScore = 0;
             let numOfRounds = 0;
+            let gameOver = false;
 
             const btns = document.querySelectorAll('button');
             btns.forEach(btn => btn.addEventListener('click', startAGame));
@@ -56,8 +57,7 @@
             }
 
             function startAGame(e) {
-                let gameOver = false;
-
+                let winner = "";
                 if(gameOver) {
                     console.log("Resetting game...");
                     resetGame();
@@ -76,11 +76,11 @@
                     numOfRounds++;
 
                     if(playerScore === SCORE_TO_WIN || computerScore === SCORE_TO_WIN) {
-                        determineWinner(numOfRounds);
+                        winner = determineWinner();
                         gameOver = true;
                     }
 
-                    updateResults(numOfRounds);
+                    updateResults(numOfRounds, winner);
                 }
             }
 
@@ -119,25 +119,27 @@
                     return outcomes[2];
             }
 
-            function determineWinner(numOfRounds) {
+            function determineWinner() {
                 let winner = "";
                 if (playerScore > computerScore) {
                     winner = "YOU";
                 }
-                else if (computerScore > playergameOverScore) {
+                else if (computerScore > playerScore) {
                     winner = "COMPUTER";
                 }
                 else winner = "no one! It's a tie!"
-
-                // better to place this in updateResults
-                overallResult.textContent = `In ${numOfRounds} rounds, the overall winner is: ${winner}!`;
-                divResult.appendChild(overallResult);
+                
+                return winner;
             }
 
-            function updateResults(numOfRounds) {
+            function updateResults(numOfRounds, winner) {
                 roundDisplay.textContent = numOfRounds;
                 playScoreDisplay.textContent = playerScore;
                 compScoreDisplay.textContent = computerScore;
+                if(winner) {
+                    overallResult.textContent = `In ${numOfRounds} rounds, the overall winner is: ${winner}!`;
+                    divResult.appendChild(overallResult);
+                }
             }
 
             function formatChoice(input) {
